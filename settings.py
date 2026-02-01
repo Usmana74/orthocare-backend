@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "change-this-secret")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 # Production-ready allowed hosts
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
