@@ -78,18 +78,27 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # PostgreSQL - Production ready
 # orthocare_backend/settings.py
 # orthocare_backend/settings.py
+# orthocare_backend/settings.py - REPLACE your DATABASES completely
 import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
+        'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'OPTIONS': {
+            'connect_timeout': 30,
+        },
     }
 }
+
+# Debug print - REMOVE after working
+print(f"DB HOST: {os.getenv('POSTGRES_HOST')}")
+print(f"DB NAME: {os.getenv('POSTGRES_DB')}")
+
 
 
 
