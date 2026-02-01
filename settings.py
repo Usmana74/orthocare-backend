@@ -8,7 +8,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "change-this-secret")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 # Production-ready allowed hosts
-ALLOWED_HOSTS = ['*', 'orthocare-backend.railway.app', '.railway.app']
+import os
+ALLOWED_HOSTS = ['*']  # TEMPORARY for debugging
+# ALLOWED_HOSTS = [h for h in os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if h]
+
 DEBUG = True 
 
 INSTALLED_APPS = [
