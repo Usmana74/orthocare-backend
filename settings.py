@@ -139,3 +139,14 @@ if not DEBUG:
     
     # Force HTTPS (Railway/Vercel handle this)
     # SECURE_SSL_REDIRECT = True
+
+# Railway PostgreSQL - ADD THIS BLOCK
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
