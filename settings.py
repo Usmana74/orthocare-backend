@@ -8,7 +8,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "change-this-secret")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 # Production-ready allowed hosts
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'orthocare-backend.railway.app', '.railway.app']
+DEBUG = True 
 
 INSTALLED_APPS = [
     "django.contrib.admin",
