@@ -65,15 +65,16 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # =====================================================
 # SINGLE DATABASE CONFIG - NO CONFLICTS
 # =====================================================
-print("=== RAILWAY DB DEBUG ===")
-print(f"POSTGRES_HOST: '{os.getenv('POSTGRES_HOST')}'")
-print(f"POSTGRES_DB: '{os.getenv('POSTGRES_DB')}'")
-print(f"POSTGRES_USER: '{os.getenv('POSTGRES_USER')}'")
-print("========================")
-
-import dj_database_url
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres', 
+        'PASSWORD': 'PZyCWUxoXjiUagaegYRBREXNJnnjMuOW',
+        'HOST': 'nozomi.proxy.rlwy.net',      ← YOUR PROXY!
+        'PORT': '17149',                      ← YOUR PORT!
+        'OPTIONS': {'connect_timeout': 60},
+    }
 }
 
 
