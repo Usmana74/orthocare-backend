@@ -73,6 +73,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # PostgreSQL - Production ready
+# orthocare_backend/settings.py
+# orthocare_backend/settings.py
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -83,6 +87,8 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
+
+
 
 
 # Password validation
