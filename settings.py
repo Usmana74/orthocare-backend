@@ -65,17 +65,25 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # =====================================================
 # SINGLE DATABASE CONFIG - NO CONFLICTS
 # =====================================================
+# FORCE DEBUG - See EXACTLY what Django uses
+import os
+print("=== CRITICAL DEBUG ===")
+print(f"HOST being used: '{repr('nozomi.proxy.rlwy.net')}'")
+print(f"PORT being used: '{repr('17149')}'")
+print("====================")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
-        'USER': 'postgres', 
+        'USER': 'postgres',
         'PASSWORD': 'PZyCWUxoXjiUagaegYRBREXNJnnjMuOW',
-        'HOST': 'nozomi.proxy.rlwy.net',      ← YOUR PROXY!
-        'PORT': '17149',                      ← YOUR PORT!
+        'HOST': 'nozomi.proxy.rlwy.net',
+        'PORT': '17149',
         'OPTIONS': {'connect_timeout': 60},
     }
 }
+
 
 
 # Rest of your settings (unchanged)...
