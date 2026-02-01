@@ -74,15 +74,16 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # PostgreSQL - Production ready
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "orthocare"),
-        "USER": os.getenv("POSTGRES_USER", "tayyab"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "tayyab1234"),
-        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
