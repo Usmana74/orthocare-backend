@@ -1,0 +1,11 @@
+﻿{
+  \"\\": \"https://railway.com/railway.schema.json\",
+  \"build\": {
+    \"builder\": \"NIXPACKS\"
+  },
+  \"deploy\": {
+    \"startCommand\": \"python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn orthocare_backend.wsgi\",
+    \"restartPolicyType\": \"ON_FAILURE\",
+    \"restartPolicyMaxRetries\": 10
+  }
+}
