@@ -71,17 +71,11 @@ print(f"POSTGRES_DB: '{os.getenv('POSTGRES_DB')}'")
 print(f"POSTGRES_USER: '{os.getenv('POSTGRES_USER')}'")
 print("========================")
 
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
-        'OPTIONS': {'connect_timeout': 60},
-    }
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
 }
+
 
 # Rest of your settings (unchanged)...
 LANGUAGE_CODE = "en-us"
