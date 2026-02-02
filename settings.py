@@ -69,16 +69,10 @@ TEMPLATES = [{
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # SINGLE DATABASE CONFIG - NO DUPLICATES
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'PZyCWUxoXjiUagaegYRBREXNJnnjMuOW',
-        'HOST': 'nozomi.proxy.rlwy.net',
-        'PORT': '17149',
-        'OPTIONS': {'connect_timeout': 60},
-    }
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
 }
 
 LANGUAGE_CODE = "en-us"
