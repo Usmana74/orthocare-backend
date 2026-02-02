@@ -72,19 +72,24 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # DATABASE CONFIG
 # =====================================================
 import dj_database_url
+import os
 
-# This reads 'DATABASE_URL' from environment and configures everything automatically
+# 1. Get the URL from environment
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
+        default=DATABASE_URL,
         conn_max_age=600,
-        ssl_require=False  # Railway internal networking usually doesn't require SSL
+        conn_health_checks=True,
     )
 }
 
-# Add this right below your DATABASES dictionary
-print(f"DEBUG: Connecting to Database Host: {DATABASES['default'].get('HOST')}")
-
+# 2. Safety Check: If it's still localhost, something is wrong with the Env Var
+if DATABASES['default'].get('HOST') in ['localhost', '127.0.0.1', '']:
+    print("⚠️ WARNING: DATABASE_URL not found or invalid. Defaulting to localhost.")
+else:
+    print(f"✅ SUCCESS: Connecting to Database Host: {DATABASES['default'].get('HOST')}")
 # Rest of your settings (unchanged)...
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Karachi"
