@@ -1,3 +1,8 @@
+print("🔥=== SETTINGS DEBUG START ===")
+print("Django reading HOST=nozomi.proxy.rlwy.net:17149")
+print("🔥========================")
+
+
 from pathlib import Path
 print("=== SETTINGS LOADED ===")  # ← ADD THIS LINE
 print(f"HOST WILL BE: nozomi.proxy.rlwy.net:{17149}")
