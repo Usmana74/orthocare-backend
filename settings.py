@@ -71,8 +71,16 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # 🔥🔥🔥 THIS IS THE ONLY DATABASE CONFIG - NOTHING ELSE
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["PGDATABASE"],
+        "USER": os.environ["PGUSER"],
+        "PASSWORD": os.environ["PGPASSWORD"],
+        "HOST": os.environ["PGHOST"],
+        "PORT": os.environ["PGPORT"],
+    }
 }
+
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Karachi"
