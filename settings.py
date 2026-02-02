@@ -1,8 +1,6 @@
-# TOP OF FILE - DEBUG PRINTS (Execute FIRST)
-print("🔥=== SETTINGS DEBUG START ===")
-print("HOST: nozomi.proxy.rlwy.net")
-print("PORT: 17149")
-print("🔥========================")
+print("🔥=== DEBUG: Settings loaded ===")
+print("HOST will be: nozomi.proxy.rlwy.net:17149")
+print("🔥============================")
 
 from pathlib import Path
 from datetime import timedelta
@@ -16,7 +14,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
-    "django.contrib.auth",
+    "django.contrib.auth", 
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -42,14 +40,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://localhost:5173", 
-    "http://127.0.0.1:8080",
-    "http://localhost:3000",
-]
-
 ROOT_URLCONF = "orthocare_backend.urls"
 
 TEMPLATES = [{
@@ -68,7 +58,7 @@ TEMPLATES = [{
 
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
-# SINGLE DATABASE CONFIG - NO DUPLICATES
+# CRITICAL: SINGLE DATABASE BLOCK
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -100,8 +90,6 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
 }
 
 SIMPLE_JWT = {
