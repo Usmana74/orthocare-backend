@@ -1,8 +1,8 @@
-from pathlib import Path
-print("=== SETTINGS LOADED ===")  # ← ADD THIS LINE
-print(f"HOST WILL BE: nozomi.proxy.rlwy.net:{17149}")
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# TOP OF FILE - DEBUG PRINTS (Execute FIRST)
+print("🔥=== SETTINGS DEBUG START ===")
+print("HOST: nozomi.proxy.rlwy.net")
+print("PORT: 17149")
+print("🔥========================")
 
 from pathlib import Path
 from datetime import timedelta
@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "change-this-secret")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
-ALLOWED_HOSTS = ['*']  # TEMP - fix later
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -45,7 +45,7 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "http://localhost:5173",
+    "http://localhost:5173", 
     "http://127.0.0.1:8080",
     "http://localhost:3000",
 ]
@@ -68,18 +68,7 @@ TEMPLATES = [{
 
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
-# =====================================================
-# DATABASE CONFIG
-# =====================================================
-# LINE 1 - FORCE DEBUG (MUST see this in logs)
-print("🔥=== RAILWAY POSTGRES DEBUG ===")
-print("HOST: nozomi.proxy.rlwy.net")
-print("PORT: 17149")
-print("🔥========================")
-
-from pathlib import Path
-# ... your other imports
-
+# SINGLE DATABASE CONFIG - NO DUPLICATES
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -92,10 +81,6 @@ DATABASES = {
     }
 }
 
-
-
-
-# Rest of your settings (unchanged)...
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Karachi"
 USE_I18N = True
