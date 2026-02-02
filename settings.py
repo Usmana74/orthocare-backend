@@ -71,22 +71,20 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # =====================================================
 # DATABASE CONFIG
 # =====================================================
-import dj_database_url
-import os
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'PZyCWUxoXjiUagaegYRBREXNJnnjMuOW',
+        'HOST': 'nozomi.proxy.rlwy.net',
+        'PORT': '17149',
+        'OPTIONS': {
+            'connect_timeout': 30,
+        },
     }
-    print(f"✅ Connecting to: {DATABASES['default'].get('HOST')}")
-else:
-    raise ValueError("DATABASE_URL environment variable is required!")
+}
+
 
 
 # Rest of your settings (unchanged)...
