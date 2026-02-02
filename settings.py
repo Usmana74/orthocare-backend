@@ -6,7 +6,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key")
 DEBUG = False
-ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = [
+    '*', 
+    'orthocare-backend-production.up.railway.app',
+    'orthocare-backend-production.railway.app'
+]
+
+CSRF_TRUSTED_ORIGINS = [  # ← CRITICAL FOR HTTPS ADMIN LOGIN
+    'https://orthocare-backend-production.up.railway.app',
+    'https://orthocare-backend-production.railway.app'
+]
+
+CORS_ALLOWED_ORIGINS = [  # ← YOUR EXISTING CORS
+    "http://localhost:8080",
+    "http://localhost:5173", 
+    "https://orthocare-backend-production.up.railway.app",
+]
+
 
 DATABASES = {
     "default": dj_database_url.parse(os.environ["DATABASE_URL"], conn_max_age=600)
