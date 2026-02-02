@@ -69,11 +69,17 @@ TEMPLATES = [{
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # SINGLE DATABASE CONFIG - NO DUPLICATES
-import dj_database_url
-
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT'),
+    }
 }
+
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Karachi"
