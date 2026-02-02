@@ -71,6 +71,15 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # =====================================================
 # DATABASE CONFIG
 # =====================================================
+# LINE 1 - FORCE DEBUG (MUST see this in logs)
+print("🔥=== RAILWAY POSTGRES DEBUG ===")
+print("HOST: nozomi.proxy.rlwy.net")
+print("PORT: 17149")
+print("🔥========================")
+
+from pathlib import Path
+# ... your other imports
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -79,11 +88,10 @@ DATABASES = {
         'PASSWORD': 'PZyCWUxoXjiUagaegYRBREXNJnnjMuOW',
         'HOST': 'nozomi.proxy.rlwy.net',
         'PORT': '17149',
-        'OPTIONS': {
-            'connect_timeout': 30,
-        },
+        'OPTIONS': {'connect_timeout': 60},
     }
 }
+
 
 
 
