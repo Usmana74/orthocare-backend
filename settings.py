@@ -119,5 +119,30 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+# ADD THIS AT END OF settings.py (BEFORE print statements)
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orthocare_backend.settings')
+django.setup()
+
+if os.getenv('RUN_MIGRATIONS') == 'True':
+    from django.core.management import call_command
+    call_command('migrate', verbosity=2)
+    print("✅ MIGRATIONS COMPLETE")
+
+# Create superuser if doesn't exist
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
+        print("✅ SUPERUSER CREATED: admin/orthocare123")
+except:
+    print("⚠️ Superuser creation skipped")
+
+print("✅ SETTINGS LOADED SUCCESSFULLY")
+print("✅ DATABASE:", DATABASES['default']['HOST'])
+print("✅ CSRF_TRUSTED_ORIGINS:", len(CSRF_TRUSTED_ORIGINS), "origins")
+
+
 print("✅ SETTINGS LOADED SUCCESSFULLY")
 print("✅ CSRF_TRUSTED_ORIGINS:", len(CSRF_TRUSTED_ORIGINS), "origins")
