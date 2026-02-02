@@ -42,3 +42,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 print("✅ SETTINGS LOADED")
 print("✅ DB URL =", os.environ.get("DATABASE_URL"))
+
+
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"  # Already correct
