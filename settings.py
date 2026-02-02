@@ -1,8 +1,3 @@
-print("🔥=== SETTINGS DEBUG START ===")
-print("Django reading HOST=nozomi.proxy.rlwy.net:17149")
-print("🔥========================")
-
-
 from pathlib import Path
 print("=== SETTINGS LOADED ===")  # ← ADD THIS LINE
 print(f"HOST WILL BE: nozomi.proxy.rlwy.net:{17149}")
@@ -79,13 +74,12 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 # FORCE DEBUG - See EXACTLY what Django uses
 import dj_database_url
 import os
+import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv('DATABASE_URL', 
-            'postgresql://postgres:PZyCWUxoXjiUagaegYRBREXNJnnjMuOW@nozomi.proxy.rlwy.net:17149/railway')
-    )
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
 }
+
 
 
 # Rest of your settings (unchanged)...
