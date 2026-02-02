@@ -69,18 +69,21 @@ TEMPLATES = [{
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # =====================================================
-# SINGLE DATABASE CONFIG - NO CONFLICTS
+# DATABASE CONFIG
 # =====================================================
-# FORCE DEBUG - See EXACTLY what Django uses
-import dj_database_url
-import os
 import dj_database_url
 
+# This reads 'DATABASE_URL' from environment and configures everything automatically
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=False  # Railway internal networking usually doesn't require SSL
+    )
 }
 
-
+# Add this right below your DATABASES dictionary
+print(f"DEBUG: Connecting to Database Host: {DATABASES['default'].get('HOST')}")
 
 # Rest of your settings (unchanged)...
 LANGUAGE_CODE = "en-us"
