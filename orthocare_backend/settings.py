@@ -134,12 +134,14 @@ SIMPLE_JWT = {
 }
 
 
-# AUTO CREATE USER ON START
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
-        print("✅ SUPERUSER: admin/orthocare123")
-except:
-    pass
+# 🔥 AUTO-CREATE ADMIN USER
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orthocare_backend.settings')
+django.setup()
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
+    print("✅ SUPERUSER CREATED: admin/orthocare123")
+
