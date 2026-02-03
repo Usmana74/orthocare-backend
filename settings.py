@@ -62,7 +62,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "orthocare_backend.urls"  # ← FIXED project_name
+ROOT_URLCONF = "orthocare_backend.urls"
+WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # TEMPLATES
 TEMPLATES = [{
@@ -79,10 +80,11 @@ TEMPLATES = [{
     },
 }]
 
-WSGI_APPLICATION = "orthocare_backend.wsgi.application"  # ← FIXED
+# 🔥 DATABASE - YOUR RESOLVED RAILWAY URL (CORRECT!)
+# TOP OF settings.py - ADD THIS FIRST LINE
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'orthocare_backend.settings'
 
-# DATABASE
-# DATABASE - YOUR RESOLVED RAILWAY URL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -91,8 +93,10 @@ DATABASES = {
         'PASSWORD': 'vfElDzyslOQVwANnTHxFaJissuxqSUsT',
         'HOST': 'centerbeam.proxy.rlwy.net',
         'PORT': '14106',
+        'OPTIONS': {'sslmode': 'require'}  # 🔥 RAILWAY SSL
     }
 }
+
 
 # INTERNATIONALIZATION
 LANGUAGE_CODE = "en-us"
@@ -127,30 +131,27 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-# ADD THIS AT END OF settings.py (BEFORE print statements)
-import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orthocare_backend.settings')
-django.setup()
-
+# 🔥 RAILWAY STARTUP (MOVE TO TOP - BEFORE DATABASE)
 if os.getenv('RUN_MIGRATIONS') == 'True':
+    import django
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orthocare_backend.settings')
+    django.setup()
+    
     from django.core.management import call_command
     call_command('migrate', verbosity=2)
     print("✅ MIGRATIONS COMPLETE")
 
-# Create superuser if doesn't exist
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
-        print("✅ SUPERUSER CREATED: admin/orthocare123")
-except:
-    print("⚠️ Superuser creation skipped")
+    # Create superuser if doesn't exist
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        if not User.objects.filter(username='admin').exists():
+            User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
+            print("✅ SUPERUSER CREATED: admin/orthocare123")
+    except Exception:
+        print("⚠️ Superuser creation skipped")
 
 print("✅ SETTINGS LOADED SUCCESSFULLY")
-print("✅ DATABASE:", DATABASES['default']['HOST'])
-print("✅ CSRF_TRUSTED_ORIGINS:", len(CSRF_TRUSTED_ORIGINS), "origins")
-
-
-print("✅ SETTINGS LOADED SUCCESSFULLY")
-print("✅ CSRF_TRUSTED_ORIGINS:", len(CSRF_TRUSTED_ORIGINS), "origins")
+print("✅ DATABASE HOST:", DATABASES['default']['HOST'])  # Should show centerbeam.proxy.rlwy.net
+print("✅ DATABASE PORT:", DATABASES['default']['PORT'])  # Should show 14106
+print("✅ CSRF ORIGINS:", len(CSRF_TRUSTED_ORIGINS))
