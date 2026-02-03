@@ -82,14 +82,15 @@ TEMPLATES = [{
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"  # ← FIXED
 
 # DATABASE
+# DATABASE - YOUR RESOLVED RAILWAY URL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'vfElDzyslOQVwANnTHxFaJissuxqSUsT',
-        'HOST': 'postgres.railway.internal',
-        'PORT': '5432',
+        'HOST': 'centerbeam.proxy.rlwy.net',
+        'PORT': '14106',
     }
 }
 
