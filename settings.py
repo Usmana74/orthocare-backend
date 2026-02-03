@@ -83,7 +83,14 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"  # ← FIXED
 
 # DATABASE
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'vfElDzyslOQVwANnTHxFaJissuxqSUsT',
+        'HOST': 'postgres.railway.internal',
+        'PORT': '5432',
+    }
 }
 
 # INTERNATIONALIZATION
