@@ -132,3 +132,14 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+
+# AUTO CREATE USER ON START
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
+        print("✅ SUPERUSER: admin/orthocare123")
+except:
+    pass
