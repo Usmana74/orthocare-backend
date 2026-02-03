@@ -73,16 +73,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # PostgreSQL database settings – change NAME/USER/PASSWORD if needed
+# 🔥 RAILWAY POSTGRES - YOUR RESOLVED URL
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "orthocare"),
-        "USER": os.getenv("POSTGRES_USER", "tayyab"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "tayyab1234"),
-        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "NAME": "railway",
+        "USER": "postgres",
+        "PASSWORD": "vfElDzyslOQVwANnTHxFaJissuxqSUsT",
+        "HOST": "centerbeam.proxy.rlwy.net",
+        "PORT": "14106",
+        "OPTIONS": {
+            "sslmode": "require"  # Railway SSL
+        }
     }
 }
+
+
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
