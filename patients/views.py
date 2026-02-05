@@ -13,9 +13,8 @@ class PatientViewSet(viewsets.ModelViewSet):
     ordering = ["full_name"]
     
     def get_queryset(self):
-        """🔒 IDOR FIX: Only return doctor's own patients"""
-        return Patient.objects.filter(doctor=self.request.user)
-    
-    def perform_create(self, serializer):
-        """Auto-assign current doctor to new patients"""
-        serializer.save(doctor=self.request.user)
+        """🔒 Return all patients (single doctor owns all)"""
+        if not self.request.user.is_authenticated:
+            return Patient.objects.none()
+        return Patient.objects.all()
+
