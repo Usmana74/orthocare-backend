@@ -9,20 +9,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-# Use the Render URL if available, otherwise allow all for now
+# Fix: Render uses 'RENDER_EXTERNAL_HOSTNAME'. 
+# We also include '*' temporarily to ensure connectivity during setup.
 ALLOWED_HOSTS = [os.environ.get("RENDER_EXTERNAL_HOSTNAME", "*"), "localhost", "127.0.0.1"]
 
 # 🔥 CSRF + CORS
-# Add your Vercel frontend URL here
+# Replace with your actual Vercel URL
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://your-frontend-vercel-url.vercel.app", # REPLACE THIS
+    "https://your-frontend.vercel.app", 
 ]
+
+# Fix: CSRF_TRUSTED_ORIGINS must include the protocol (https://)
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
-    "https://your-frontend-vercel-url.vercel.app" # REPLACE THIS
+    "https://your-frontend.vercel.app"
 ]
+
+# Important for Render's HTTPS Proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -41,7 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # For serving static files
+    "whitenoise.middleware.WhiteNoiseMiddleware", # Keep this high up
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -69,11 +75,12 @@ TEMPLATES = [{
 }]
 
 # 🔥 DATABASE - DYNAMIC FOR RENDER
-# It will use DATABASE_URL from Render environment variables
+# Fix: Added ssl_require to ensure connection to Render Postgres doesn't fail
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
-        conn_max_age=600
+        conn_max_age=600,
+        ssl_require=True if not DEBUG else False
     )
 }
 
@@ -86,8 +93,16 @@ USE_TZ = True
 # STATIC + MEDIA
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# WhiteNoise storage for production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Fix: Updated storage class for Django 4.2/5.0+ compatibility
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
