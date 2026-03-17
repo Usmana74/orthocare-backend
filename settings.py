@@ -6,33 +6,24 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [
-    '*',
-    'orthocare-backend-production.up.railway.app',
-    'orthocare-backend-production.railway.app'
-]
+# Use the Render URL if available, otherwise allow all for now
+ALLOWED_HOSTS = [os.environ.get("RENDER_EXTERNAL_HOSTNAME", "*"), "localhost", "127.0.0.1"]
 
-# 🔥 CSRF + CORS - RAILWAY HTTPS PRODUCTION
-CSRF_TRUSTED_ORIGINS = [
-    'https://orthocare-backend-production.up.railway.app',
-    'https://orthocare-backend-production.railway.app',
-    'http://orthocare-backend-production.up.railway.app',
-    'http://orthocare-backend-production.railway.app'
-]
-
+# 🔥 CSRF + CORS
+# Add your Vercel frontend URL here
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
     "http://localhost:5173",
-    "http://127.0.0.1:8080",
     "http://localhost:3000",
-    "https://orthocare-backend-production.up.railway.app",
-    "https://orthocare-backend-production.railway.app"
+    "https://your-frontend-vercel-url.vercel.app", # REPLACE THIS
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+    "https://your-frontend-vercel-url.vercel.app" # REPLACE THIS
 ]
 
-# APPS
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,7 +31,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "whitenoise.runserver_nostatic",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
@@ -49,10 +39,9 @@ INSTALLED_APPS = [
     "visits",
 ]
 
-# MIDDLEWARE - PERFECT ORDER
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # For serving static files
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -65,7 +54,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = "orthocare_backend.urls"
 WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
-# TEMPLATES
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [],
@@ -80,23 +68,14 @@ TEMPLATES = [{
     },
 }]
 
-# 🔥 DATABASE - YOUR RESOLVED RAILWAY URL (CORRECT!)
-# TOP OF settings.py - ADD THIS FIRST LINE
-import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'orthocare_backend.settings'
-
+# 🔥 DATABASE - DYNAMIC FOR RENDER
+# It will use DATABASE_URL from Render environment variables
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'vfElDzyslOQVwANnTHxFaJissuxqSUsT',
-        'HOST': 'centerbeam.proxy.rlwy.net',
-        'PORT': '14106',
-        'OPTIONS': {'sslmode': 'require'}  # 🔥 RAILWAY SSL
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
+    )
 }
-
 
 # INTERNATIONALIZATION
 LANGUAGE_CODE = "en-us"
@@ -107,13 +86,12 @@ USE_TZ = True
 # STATIC + MEDIA
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+# WhiteNoise storage for production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# REST FRAMEWORK
+# REST FRAMEWORK + JWT
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -126,32 +104,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
-
-# 🔥 RAILWAY STARTUP (MOVE TO TOP - BEFORE DATABASE)
-if os.getenv('RUN_MIGRATIONS') == 'True':
-    import django
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orthocare_backend.settings')
-    django.setup()
-    
-    from django.core.management import call_command
-    call_command('migrate', verbosity=2)
-    print("✅ MIGRATIONS COMPLETE")
-
-    # Create superuser if doesn't exist
-    try:
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-        if not User.objects.filter(username='admin').exists():
-            User.objects.create_superuser('admin', 'admin@orthocare.com', 'orthocare123')
-            print("✅ SUPERUSER CREATED: admin/orthocare123")
-    except Exception:
-        print("⚠️ Superuser creation skipped")
-
-print("✅ SETTINGS LOADED SUCCESSFULLY")
-print("✅ DATABASE HOST:", DATABASES['default']['HOST'])  # Should show centerbeam.proxy.rlwy.net
-print("✅ DATABASE PORT:", DATABASES['default']['PORT'])  # Should show 14106
-print("✅ CSRF ORIGINS:", len(CSRF_TRUSTED_ORIGINS))
