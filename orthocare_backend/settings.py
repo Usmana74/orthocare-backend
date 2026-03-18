@@ -29,10 +29,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # Must be here
+    "corsheaders.middleware.CorsMiddleware",       # Must be above CommonMiddleware
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -49,6 +48,16 @@ CORS_ALLOWED_ORIGINS = [
   "https://www.orthocaree.com.pk",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True  # Keep this True temporarily to test
+CORS_ALLOW_CREDENTIALS = True
+
+# REQUIRED FOR DJANGO 5.x + RENDER
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.orthocaree.com.pk",
+    "https://orthocare-backend.onrender.com" # Replace with your actual Render URL
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ROOT_URLCONF = "orthocare_backend.urls"
 
