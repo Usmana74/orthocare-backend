@@ -134,11 +134,6 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_CREDENTIALS = True
 # For local dev, allow React at http://localhost:5173 or 3000 etc.
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-]
-# In production, replace above with your real frontend URL
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
