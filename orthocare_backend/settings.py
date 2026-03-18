@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -74,18 +75,15 @@ WSGI_APPLICATION = "orthocare_backend.wsgi.application"
 
 # PostgreSQL database settings – change NAME/USER/PASSWORD if needed
 # 🔥 RAILWAY POSTGRES - YOUR RESOLVED URL
+import dj_database_url
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "railway",
-        "USER": "postgres",
-        "PASSWORD": "vfElDzyslOQVwANnTHxFaJissuxqSUsT",
-        "HOST": "centerbeam.proxy.rlwy.net",
-        "PORT": "14106",
-        "OPTIONS": {
-            "sslmode": "require"  # Railway SSL
-        }
-    }
+    'default': dj_database_url.config(
+        # This will look for the DATABASE_URL environment variable on Render
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True if not DEBUG else False
+    )
 }
 
 
